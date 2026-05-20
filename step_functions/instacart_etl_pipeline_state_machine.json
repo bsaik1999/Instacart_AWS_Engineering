@@ -1,0 +1,30 @@
+{
+  "Comment": "Instacart AWS Data Engineering ETL Pipeline",
+  "StartAt": "Run Products Glue Job",
+  "States": {
+    "Run Products Glue Job": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "products_csv_to_parquet_job"
+      },
+      "Next": "Run Orders Glue Job"
+    },
+    "Run Orders Glue Job": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "orders_csv_to_parquet_job"
+      },
+      "Next": "Run Order Products Glue Job"
+    },
+    "Run Order Products Glue Job": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "order_products_csv_to_parquet_job"
+      },
+      "End": true
+    }
+  }
+}
